@@ -1,13 +1,22 @@
-.PHONY:
-testAll: testRemoveDuplicates
+TESTS = testRemoveDuplicates testRotateArray
+EXECS = removeDuplicates.out rotateArray.out
 
 .PHONY:
-testRemoveDuplicates: removeDuplicates.out
+testAll: $(TESTS)
+
+.PHONY:
+$(TESTS):
 	@./$<
 
-removeDuplicates.out: removeDuplicates.c
+testRemoveDuplicates: removeDuplicates.out
+testRotateArray: rotateArray.out
+
+$(EXECS):
 	@cc $^ -o $@
+
+removeDuplicates.out: removeDuplicates.c
+rotateArray.out: rotateArray.c
 
 .PHONY:
 clean:
-	@rm *.out
+	@rm $(EXECS)
