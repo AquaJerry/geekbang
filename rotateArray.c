@@ -25,9 +25,16 @@
  */
 
 
-/* runtime: ms, memory: MB */
+/* runtime: 12ms, memory: 7.4MB */
+int j, l;
 void rotate(int *nums, int numsSize, int k) {
-  // TODO(aquajerry): implementation
+  if (k %= numsSize) if (0 > (l = k - (j = numsSize - k))) {
+    for (l = k; l--; ) nums[l] ^= nums[numsSize] ^= nums[l] ^= nums[--numsSize];
+    rotate(nums + k, j, k);
+  } else {
+    while (j--) nums[j] ^= nums[numsSize] ^= nums[j] ^= nums[--numsSize];
+    rotate(nums, k, l);
+  }
 }
 
 
@@ -45,6 +52,13 @@ void rotate(int *nums, int numsSize, int k) {
     for (int i = 0; i < LEN(expected); ++i) assert(expected[i] == nums[i]); \
   }
 int main() {
+  ROTATE(1) BY(0) SHOULD_BE(1)
+  ROTATE(1) BY(1) SHOULD_BE(1)
+  ROTATE(1) BY(2) SHOULD_BE(1)
+  ROTATE(1, 2) BY(0) SHOULD_BE(1, 2)
+  ROTATE(1, 2) BY(1) SHOULD_BE(2, 1)
+  ROTATE(1, 2) BY(2) SHOULD_BE(1, 2)
+  ROTATE(1, 2) BY(3) SHOULD_BE(2, 1)
   ROTATE(1, 2, 3, 4, 5, 6, 7) BY(3) SHOULD_BE(5, 6, 7, 1, 2, 3, 4)
   ROTATE(-1, -100, 3, 99) BY(2) SHOULD_BE(3, 99, -1, -100)
 }
